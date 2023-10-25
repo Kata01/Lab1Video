@@ -55,53 +55,61 @@ class Serpentine:
         width = len(input_matrix[0])
         height = len(input_matrix)
         serpentine_data = []
-        x, y = 0, height - 1
+        x, y = 0, 0
         # Dirección cuando image_half = 1 (1 a la derecha, 2 en diagonal hacia abajo, 3 hacia abajo, 4 en diagonal hacia arriba)
         # Dirección cuando image_half = 2 (1 a la derecha, 2 en diagonal hacia arriba, 3 hacia abajo, 4 en diagonal hacia abajo)
         direction = 1
         image_half = 1
-
-        while x != (width - 1) and y != 0:
+        while x != width and y != height:
                 pixel_value = input_matrix[y][x]
                 serpentine_data.append(pixel_value)
+                print(pixel_value)
                 # Avanza un píxel a la derecha
-                if (width > height and y == width - 1) or (height >= width and x == 0):
-                   image_half = 2
+                if (width > height and y == height - 1 and x == width - height):
 
+                   image_half = 2
+                   direction = 1
+
+                if (height >= width and x == width - 1 and y == height - width - 1):
+                    image_half = 2
+                    direction = 5
                 if image_half == 1:
                         if direction == 1:
                             x += 1
                             direction = 2
                         elif direction == 2:
-                            y -= 1
+                            y += 1
                             x -= 1
                             if x == 0:
                                 direction = 3
                         elif direction == 3:
-                            y -= 1
+                            y += 1
                             direction = 4
                         elif direction == 4:
-                            y += 1
+                            y -= 1
                             x += 1
-                            if y == (height - 1):
+                            if y == 0:
                                 direction = 1
                 elif image_half == 2:
                         if direction == 1:
                             x += 1
                             direction = 2
                         elif direction == 2:
-                            y += 1
+                            y -= 1
                             x += 1
                             if x == width - 1:
                                 direction = 3
                         elif direction == 3:
-                            y -= 1
+                            y += 1
                             direction = 4
                         elif direction == 4:
-                            y -= 1
+                            y += 1
                             x -= 1
-                            if y == 0:
+                            if y == height-1:
                                 direction = 1
+                        elif direction == 5:
+                            y += 1
+                            direction = 4
         return serpentine_data
 
 class BlackAndWhite:
@@ -171,6 +179,13 @@ input_matrix = [[1, 2, 3, 4],
 serp_read = read.serpentine(input_matrix)
 print(f'Matrix: {input_matrix}')
 print(f'Serpentine read matrix:{serp_read}')
+input_matrix2 = [[1, 2, 3],
+                [5, 6, 7],
+                [9, 10, 11],
+                 [4, 8, 12]]
+serp_read2 = read.serpentine(input_matrix2)
+print(f'Matrix: {input_matrix2}')
+print(f'Serpentine read matrix:{serp_read2}')
 
 # test ex4
 print('-*'*50)
@@ -197,4 +212,3 @@ dct_block = dct_converter.convert_to_dct(input_block)
 print(f'DCT Block: {dct_block}')
 reconstructed_block = dct_converter.convert_to_idct(dct_block)
 print(f'Reconstructed block: {reconstructed_block}')
-
